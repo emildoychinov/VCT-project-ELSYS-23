@@ -1,0 +1,16 @@
+version: "3.3"
+services:
+  chat:
+    image: vct-project-23_chat
+    build: 
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "80:1234"
+    command: ["npm", "start"]
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512M"
