@@ -1,3 +1,6 @@
+# Cassandra data
+docker/data/
+
 # Logs
 logs
 *.log
