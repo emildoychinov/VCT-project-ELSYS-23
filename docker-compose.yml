@@ -1,16 +1,62 @@
 version: "3.3"
 services:
-  chat:
-    image: vct-project-23_chat
+  chat-1:
     build: 
       context: .
       dockerfile: Dockerfile.server
     ports:
-      - "80:1234"
-    command: ["npm", "start"]
-    deploy:
-      replicas: 3
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "512M"
+      - "5001:5000"
+    networks:
+      - chats
+
+  chat-2:
+    build: 
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "5002:5000"
+    networks:
+      - chats
+
+  chat-3:
+    build: 
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "5003:5000"
+    networks:
+      - chats
+
+  nginx:
+    build: 
+      context: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - chat-1
+      - chat-2
+      - chat-3
+    networks:
+      - chats
+
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./data:/var/lib/cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=app
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_RACK=rack1
+
+networks:
+  chats:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.1.0.0/24"
+          gateway: "172.1.0.1"

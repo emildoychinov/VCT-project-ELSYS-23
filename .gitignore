@@ -1,5 +1,6 @@
 # Cassandra data
 docker/data/
+data/
 
 # Logs
 logs

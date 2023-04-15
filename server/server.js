@@ -7,7 +7,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-const port = 1234;
+const port = 5000;
 
 app.use(express.static('./client/static'));
 
