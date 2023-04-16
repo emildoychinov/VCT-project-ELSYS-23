@@ -106,24 +106,24 @@ async function post_message(room_id, author, content){
 
 }
 
+async function load_messages(room_id, lower_limit, upper_limit){
+    const params = [room_id];
+    const query = "SELECT * FROM messages WHERE room_id = ? ORDER BY sent_at DESC LIMIT " + upper_limit;
+    
+    var res = (await client.execute(query, params)).rows.map((row) => {
+        return { 
+            content: row.content,
+            author: row.author,
+            sent_at: row.sent_at
+        };
+    });
+    
+    return res.slice(lower_limit, upper_limit+1);
+}
+
 
 
 connect();
-
-create_room("goshan", "petak", ["misho", "tisho", "gencho", "encho"], false);
-create_room("goshan", "petak", ["grishisho", "tisho", "gencho", "tencho"], true);
-
-var id = Promise.resolve(get_user_rooms("tisho"));
-
-id.then((value)=>{
-
-    const res = Promise.resolve(post_message(value[0].id, "tisho", "az sum tup pedal"));
-    
-    res.then((value) =>{
-        console.log(value);
-    })
-
-})
 
 
 
