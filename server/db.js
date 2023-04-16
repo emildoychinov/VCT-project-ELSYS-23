@@ -1,6 +1,6 @@
-const cassandra = require('cassandra-driver');
+export const cassandra = require('cassandra-driver');
 
-const client = new cassandra.Client({
+export const client = new cassandra.Client({
 
   contactPoints: ['localhost'],
   keyspace : 'app_data',
@@ -8,14 +8,14 @@ const client = new cassandra.Client({
 
 });
 
-async function connect() {
+export async function connect() {
 
   await client.connect();
   console.log('Connected to Cassandra');
 
 }
 
-async function register_user(username, password){
+export async function register_user(username, password){
 
     var params = [username];
 
@@ -39,7 +39,7 @@ async function register_user(username, password){
 
 }
 
-async function login_user(username, password){
+export async function login_user(username, password){
 
     const params = [username];
     var res = (await client.execute("SELECT * FROM users WHERE username = ?", params)).rows;
@@ -66,7 +66,7 @@ async function login_user(username, password){
     }
 }
 
-async function create_room(name, owner, users, isPrivate){
+export async function create_room(name, owner, users, isPrivate){
     
     const params = [name, owner, users, isPrivate];
     const query = "INSERT INTO message_rooms (room_id, name, creator, users, private) VALUES (uuid(), ?, ?, ?, ?)";
@@ -78,7 +78,7 @@ async function create_room(name, owner, users, isPrivate){
     }
 }
 
-async function get_user_rooms(user){
+export async function get_user_rooms(user){
 
     const params = [user];
     const query = "SELECT * FROM message_rooms WHERE users CONTAINS ?";
@@ -92,7 +92,7 @@ async function get_user_rooms(user){
     return res;
 }
 
-async function post_message(room_id, author, content){
+export async function post_message(room_id, author, content){
 
     const params = [room_id, author, content];
     const query = "INSERT INTO messages (room_id, message_id, author, content, sent_at) VALUES (?, uuid(), ?, ?, toUnixTimestamp(now()))";
@@ -106,7 +106,7 @@ async function post_message(room_id, author, content){
 
 }
 
-async function load_messages(room_id, lower_limit, upper_limit){
+export async function load_messages(room_id, lower_limit, upper_limit){
     const params = [room_id];
     const query = "SELECT * FROM messages WHERE room_id = ? ORDER BY sent_at DESC LIMIT " + upper_limit;
     
@@ -121,9 +121,6 @@ async function load_messages(room_id, lower_limit, upper_limit){
     return res.slice(lower_limit, upper_limit+1);
 }
 
-
-
-connect();
 
 
 
