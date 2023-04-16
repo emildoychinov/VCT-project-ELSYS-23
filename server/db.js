@@ -81,7 +81,7 @@ async function get_user_rooms(user){
 	const query = "SELECT * FROM message_rooms WHERE users CONTAINS ?";
 	var res = (await client.execute(query, params)).rows.map((row) => {
 		return { 
-			id: row.room_id.buffer,
+			id: row.room_id,
 			name: row.name
 		};
 	});
@@ -105,7 +105,7 @@ async function post_message(room_id, author, content){
 
 async function load_messages(room_id, lower_limit, upper_limit){
 	const params = [room_id];
-	const query = "SELECT * FROM messages WHERE room_id = ? ORDER BY sent_at DESC LIMIT " + upper_limit;
+	const query = "SELECT * FROM messages WHERE room_id = ? ORDER BY sent_at ASC LIMIT " + upper_limit;
 
 	var res = (await client.execute(query, params)).rows.map((row) => {
 		return { 

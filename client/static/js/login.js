@@ -1,4 +1,5 @@
-window.onload = function (){
+window.onload = async function (){
+    var socket = io();
     var username = document.getElementById("username");
     var password = document.getElementById("password");
     var login = document.getElementsByClassName("button")[0];
@@ -7,21 +8,21 @@ window.onload = function (){
         var username_value = username.value;
         var password_value = password.value;
 
-        socket.emit('login', username_value, password_value);
+        let res = await validate('login', username_value, password_value);
         
-        socket.on('login_resp', async (res)=>{
-            
-            if(res.code == 200){
-                alert("pishka v guza");
-                return;
-            }
-    
-            else if(res.code == 404){
-                alert("nqma pishka v guza");
-                return;
-           }
+        if(!res){
+            clear_form();
+            return;
+        }
 
-        });
+        res = await authenticate(socket, 'login', username_value, password_value);
+        
+        if(!res){
+            clear_form();
+            return;
+        }
+
+        
 
     });
 }
