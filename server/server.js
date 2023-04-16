@@ -1,5 +1,4 @@
-import * as database from 'db.js';
-
+const database = require('./db.js');
 const express = require('express');
 const { createServer } = require("http");
 const { Server } = require("socket.io");
@@ -34,16 +33,22 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('changeRoom', (newRoom) => {
+
 		if (socket.room != '') socket.leave(socket.room);
 		console.log('left ' + socket.room + ' and joined ' + newRoom);
 		socket.join(newRoom);
 		socket.room = newRoom;
+
 	});
 
-	socket.on('login', async function(username, password) {
+	socket.on('login', async (username, password) => {
+
 		var res = await database.login_user(username, password);
-		return res;
+		socket.emit('login_resp', res);
+
 	});
+
+
 
 });
 
