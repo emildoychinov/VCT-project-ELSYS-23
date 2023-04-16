@@ -1,4 +1,4 @@
-import * as database from 'db.js';
+import * as database from './db.js';
 
 const express = require('express');
 const { createServer } = require("http");
