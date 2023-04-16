@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#docker-compose up -d 
-
 docker-compose up -d cassandra
 
 while [[ ! $(docker compose ps | grep 'cassandra') ]] ;do
@@ -10,8 +8,8 @@ done
 
 echo "Cassandra running"
 echo "Awaiting 30 seconds for cassandra to start"
-sleep 30 
-echo "sleep done"
+sleep 60 
+echo "Await done"
 
 docker cp server/cassandra/app.cql cassandra:media/
 docker exec -it cassandra cqlsh -e "SOURCE 'media/app.cql'"

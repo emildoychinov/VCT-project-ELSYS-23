@@ -7,7 +7,7 @@ services:
     ports:
       - "5001:5000"
     networks:
-      - chats
+      - project 
 
   chat-2:
     build: 
@@ -16,7 +16,7 @@ services:
     ports:
       - "5002:5000"
     networks:
-      - chats
+      - project 
 
   chat-3:
     build: 
@@ -25,7 +25,7 @@ services:
     ports:
       - "5003:5000"
     networks:
-      - chats
+      - project 
 
   nginx:
     build: 
@@ -37,7 +37,7 @@ services:
       - chat-2
       - chat-3
     networks:
-      - chats
+      - project 
 
   cassandra:
     image: cassandra:latest
@@ -51,9 +51,11 @@ services:
       - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
       - CASSANDRA_DC=datacenter1
       - CASSANDRA_RACK=rack1
+    networks:
+      - project 
 
 networks:
-  chats:
+  project:
     driver: bridge
     ipam:
       driver: default
