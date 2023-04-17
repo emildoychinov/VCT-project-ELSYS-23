@@ -14,7 +14,8 @@ async function connect() {
 
 async function register_user(username, password){
 	var params = [username];
-	var isExisting =  !( (await client.execute("SELECT * FROM users WHERE username = ?", params)).rows.length == 0 )
+	const queryExisting = "SELECT * FROM users WHERE username = ?";
+	var isExisting =  !( (await client.execute(queryExisting, params)).rows.length == 0 )
 
 	if(isExisting){
 		return {
@@ -36,7 +37,8 @@ async function register_user(username, password){
 
 async function login_user(username, password){
 	const params = [username];
-	var res = (await client.execute("SELECT * FROM users WHERE username = ?", params)).rows;
+	const query = "SELECT * FROM users WHERE username = ?";
+	var res = (await client.execute(query, params)).rows;
 
 	console.log(res)
 
