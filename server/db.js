@@ -105,7 +105,7 @@ async function post_message(room_id, author, content){
 
 async function load_messages(room_id, lower_limit, upper_limit){
 	const params = [room_id];
-	const query = "SELECT * FROM messages WHERE room_id = ? ORDER BY sent_at ASC LIMIT " + upper_limit;
+	const query = "SELECT * FROM messages WHERE room_id = ? ORDER BY sent_at DESC LIMIT " + upper_limit;
 
 	var res = (await client.execute(query, params)).rows.map((row) => {
 		return { 
