@@ -13,9 +13,7 @@ async function connect() {
 }
 
 async function register_user(username, password){
-
 	var params = [username];
-
 	var isExisting =  !( (await client.execute("SELECT * FROM users WHERE username = ?", params)).rows.length == 0 )
 
 	if(isExisting){
@@ -37,7 +35,6 @@ async function register_user(username, password){
 }
 
 async function login_user(username, password){
-
 	const params = [username];
 	var res = (await client.execute("SELECT * FROM users WHERE username = ?", params)).rows;
 
@@ -64,7 +61,6 @@ async function login_user(username, password){
 }
 
 async function create_room(name, owner, users, isPrivate){
-
 	const params = [name, owner, users, isPrivate];
 	const query = "INSERT INTO message_rooms (room_id, name, creator, users, private) VALUES (uuid(), ?, ?, ?, ?)";
 	await client.execute(query, params);
@@ -76,7 +72,6 @@ async function create_room(name, owner, users, isPrivate){
 }
 
 async function get_user_rooms(user){
-
 	const params = [user];
 	const query = "SELECT * FROM message_rooms WHERE users CONTAINS ?";
 	var res = (await client.execute(query, params)).rows.map((row) => {
@@ -90,7 +85,6 @@ async function get_user_rooms(user){
 }
 
 async function post_message(room_id, author, content){
-
 	const params = [room_id, author, content];
 	const query = "INSERT INTO messages (room_id, message_id, author, content, sent_at) VALUES (?, uuid(), ?, ?, toUnixTimestamp(now()))";
 
@@ -100,7 +94,6 @@ async function post_message(room_id, author, content){
 		"code" : 200,
 		"message" : "message received sucessfully"
 	}
-
 }
 
 async function load_messages(room_id, lower_limit, upper_limit){

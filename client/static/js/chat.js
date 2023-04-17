@@ -5,6 +5,8 @@ var chat_session = window.localStorage.getItem("ROOM_ID");
 var lower_limit = 0;
 var upper_limit = 30;
 
+var change_room = document.querySelector(".change_room");
+
 async function load_messages(){
     socket.emit('load_messages', lower_limit, upper_limit);
     socket.on('post_messages', async (messages) => {
@@ -20,8 +22,12 @@ async function load_messages(){
     })
 }
 
-window.onload = async function(){
+change_room.addEventListener('click', () => {
+	localStorage.removeItem('ROOM_ID');
+	window.location.href = "/chatrooms";
+});
 
+window.onload = async function(){
     socket.emit('changeRoom', chat_session);
     if(chatbox.scrollTop == 0){
         await load_messages();
@@ -58,5 +64,4 @@ window.onload = async function(){
         msg.innerHTML = "<b>"+author+":</b>" + message;
         chatbox.appendChild(msg);
     })
-
 }

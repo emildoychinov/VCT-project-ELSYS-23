@@ -48,3 +48,13 @@ body {
   input[type="submit"]:hover {
     background-color: #222;
   }
+
+#login-form > button {
+    background-color: rgb(66, 196, 247);
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 19px;
+	padding: 6px;
+}
+
