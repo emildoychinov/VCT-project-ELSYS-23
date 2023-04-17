@@ -28,11 +28,15 @@ change_room.addEventListener('click', () => {
 });
 
 window.onload = async function(){
+	if (!localStorage.hasOwnProperty('ROOM_ID')) {
+		window.location.href = '/sign_in';
+	}
+
     socket.emit('changeRoom', chat_session);
     if(chatbox.scrollTop == 0){
         await load_messages();
     }
-    chatbox.scrollTop = chatbox.scrollHeight;
+    // chatbox.scrollTop = chatbox.scrollHeight;
 
     chatbox.addEventListener("scroll", async function () {
         if(chatbox.scrollTop == 0){

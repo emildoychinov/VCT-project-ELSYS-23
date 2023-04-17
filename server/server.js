@@ -14,7 +14,7 @@ const port = 5000;
 app.use(express.static('./client/static'));
 
 app.get('/', (req, res) => {
-	res.sendFile('/client/html/home.html', { root: './' });
+	res.sendFile('/client/html/chat.html', { root: './' });
 });
 
 app.get('/sign_in', (req, res) => {
@@ -27,10 +27,6 @@ app.get('/sign_up', (req, res) => {
 
 app.get('/chatrooms', (req, res) => {
 	res.sendFile('/client/html/chatrooms.html', { root: './' });
-});
-
-app.get('/chat', (req, res) => {
-	res.sendFile('/client/html/chat.html', { root: './' });
 });
 
 io.on('connection', (socket) => {
@@ -66,7 +62,11 @@ io.on('connection', (socket) => {
 	socket.on('get_user_rooms', async(user) => {
 		var res = await database.get_user_rooms(user);
 		socket.emit('post_user_rooms', res);
-	})
+	});
+
+	socket.on('createRoom', async (user, name, members) => {
+		
+	});
 
 	socket.on('load_messages', async(lower_limit, upper_limit) => {
 		if(socket.room != ''){

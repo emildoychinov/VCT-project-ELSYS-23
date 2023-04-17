@@ -4,7 +4,6 @@ body {
   }
   h1 {
     text-align: center;
-    color: #666;
     margin-top: 50px;
   }
   ul {
@@ -31,3 +30,34 @@ body {
     background-color: rgb(0, 176, 246);
     color: #fff;
   }
+
+.chatroom_container {
+	width: 20vw;
+	height: 30vh;
+
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+
+	left: 40vw;
+	position: absolute;
+}
+
+.chatroom_container > input, .chatroom_container > button {
+	display: inline-block; 
+}
+
+.chatroom_container > input {
+	height: 2vh;
+	margin-bottom: 2vh;
+}
+
+.chatroom_container > button {
+    background-color: rgb(66, 196, 247);
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 19px;
+	padding: 6px;
+}

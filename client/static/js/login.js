@@ -4,6 +4,10 @@ var password = document.getElementById("password");
 var login = document.getElementsByClassName("button")[0];
 const redirect = document.querySelector('.redirect');
 
+window.onload = () => {
+	if (localStorage.hasOwnProperty('USER')) window.href = '/';	
+};
+
 login.addEventListener('click', async function(){
 	var username_value = username.value;
 	var password_value = password.value;
