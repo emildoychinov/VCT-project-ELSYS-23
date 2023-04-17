@@ -24,6 +24,7 @@ async function load_messages(){
 
 change_room.addEventListener('click', () => {
 	localStorage.removeItem('ROOM_ID');
+    socket.emit('changeRoom', '');
 	window.location.href = "/chatrooms";
 });
 
@@ -48,7 +49,7 @@ window.onload = async function(){
     send_message.addEventListener("click", async function(){
         var messageInput = document.getElementById("message-input");
         var message = messageInput.value;
-        if(message == ''){
+        if(!message.replace(/\s/g, '').length){
             return;
         }
         var msg = document.createElement("p");
