@@ -1,7 +1,7 @@
 var list = document.getElementById("room-list");
 var socket = io();
+
 async function load_user_rooms(user){
-    
     socket.emit('get_user_rooms', user)
     socket.on('post_user_rooms', async (rooms) => {
         for(room of rooms){
@@ -15,7 +15,6 @@ async function load_user_rooms(user){
             list.appendChild(li);
         }
     })
-
 }
 
 window.onload = async function (){

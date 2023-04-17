@@ -22,23 +22,21 @@ async function validate(page, usernameValue, passwordValue, confirmedPasswordVal
 
     return true;
 }
+
 async function authenticate(socket, page, usernameValue, passwordValue){
+	socket.emit(page, usernameValue, passwordValue);
+	socket.on(page+'_resp', async (res)=>{
+		console.log(res);
 
-        socket.emit(page, usernameValue, passwordValue);
-        socket.on(page+'_resp', async (res)=>{
+		if(res.code == 200){
+			window.localStorage.setItem("USER", usernameValue);
+			window.location.href = "/chatrooms";
+			return true;
+		}
 
-            console.log(res);
-            
-            if(res.code == 200){
-                window.localStorage.setItem("USER", usernameValue);
-                window.location.href = "/chatrooms";
-                return true;
-            }
-    
-            else if(res.code == 404){
-                alert(res.message);
-                return false;
-           }
-
-        });
+		else if(res.code == 404){
+			alert(res.message);
+			return false;
+		}
+	});
 }
