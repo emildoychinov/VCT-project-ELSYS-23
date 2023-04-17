@@ -64,8 +64,9 @@ io.on('connection', (socket) => {
 		socket.emit('post_user_rooms', res);
 	});
 
-	socket.on('createRoom', async (user, name, members) => {
-		
+	socket.on('createChatroom', async (user, name, members) => {
+		var res = await database.create_room(name, user, members, false);		
+		socket.emit('createChatroomResponse', res);
 	});
 
 	socket.on('load_messages', async(lower_limit, upper_limit) => {

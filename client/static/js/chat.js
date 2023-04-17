@@ -13,9 +13,9 @@ async function load_messages(){
         for(message of messages){
             var msg = document.createElement("p");
             msg.className = "user_message";
-            msg.innerHTML = "<strong>" + ((message.author == current_user) ? "You" : message.author)  + ":</strong>" + message.content;
+            msg.innerHTML = "<strong>" + ((message.author == current_user) ? "You" : message.author)  + ":</strong> " + message.content;
             chatbox.insertBefore(msg, chatbox.firstChild);
-            ("<p class='user_message'> <strong>" + ((message.author == current_user) ? "You" : message.author)  + ":</strong>" + message.content + "</p>");
+            ("<p class='user_message'> <strong>" + ((message.author == current_user) ? "You" : message.author)  + ":</strong> " + message.content + "</p>");
             lower_limit+=1;
         }
         upper_limit+=30;
@@ -37,11 +37,13 @@ window.onload = async function(){
     if(chatbox.scrollTop == 0){
         await load_messages();
     }
-    // chatbox.scrollTop = chatbox.scrollHeight;
 
     chatbox.addEventListener("scroll", async function () {
         if(chatbox.scrollTop == 0){
+			var pre_load_height = chatbox.offsetHeight;
             await load_messages();
+			var diff = chatbox.offsetHeight - pre_load_height;
+			if (diff > 0) chatbox.scrollTop = diff;
         }
     })
 
@@ -54,7 +56,7 @@ window.onload = async function(){
         }
         var msg = document.createElement("p");
         msg.className = "user_message";
-        msg.innerHTML = "<b>You:</b>" + message;
+        msg.innerHTML = "<b>You:</b> " + message;
         chatbox.appendChild(msg);
         socket.emit('sendMessage', message, current_user);
         chatbox.scrollTop = chatbox.scrollHeight;
@@ -66,7 +68,7 @@ window.onload = async function(){
         console.log('Received: ' + message);
         var msg = document.createElement("p");
         msg.className = "user_message";
-        msg.innerHTML = "<b>"+author+":</b>" + message;
+        msg.innerHTML = "<b>"+author+":</b> " + message;
         chatbox.appendChild(msg);
     })
 }

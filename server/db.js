@@ -1,8 +1,7 @@
 const cassandra = require('cassandra-driver');
 
 const client = new cassandra.Client({
-	// contactPoints: ['172.1.0.2'],
-	contactPoints: ['localhost'],
+	contactPoints: ['172.1.0.2'],
 	keyspace : 'app_data',
 	localDataCenter: 'datacenter1'
 
@@ -69,11 +68,11 @@ async function create_room(name, owner, users, isPrivate){
 	for(user of users){
 		var exist_params = [user];
 		var queryExisting = "SELECT * FROM users WHERE username = ?";
-		var isExisting =  !( (await client.execute(queryExisting, exist_params)).rows.length == 0 );
+		var isExisting =  !((await client.execute(queryExisting, exist_params)).rows.length == 0 );
 		if(!isExisting){
 			return {
 				"code" : 404,
-				"message" : ("user "+user + "does not exist")
+				"message" : ("Error: user " + user + "does not exist."),
 			}
 		}
 	}
