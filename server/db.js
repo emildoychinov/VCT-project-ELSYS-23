@@ -64,6 +64,18 @@ async function login_user(username, password){
 
 async function create_room(name, owner, users, isPrivate){
 	const params = [name, owner, users, isPrivate];
+	
+	for(user of users){
+		var exist_params = [user];
+		var queryExisting = "SELECT * FROM users WHERE username = ?";
+		var isExisting =  !( (await client.execute(queryExisting, exist_params)).rows.length == 0 );
+		if(!isExisting){
+			return {
+				"code" : 404,
+				"message" : ("user "+user + "does not exist")
+			}
+		}
+	}
 	const query = "INSERT INTO message_rooms (room_id, name, creator, users, private) VALUES (uuid(), ?, ?, ?, ?)";
 	await client.execute(query, params);
 
