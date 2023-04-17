@@ -24,6 +24,7 @@ async function load_messages(){
 
 change_room.addEventListener('click', () => {
 	localStorage.removeItem('ROOM_ID');
+    socket.emit('changeRoom', '');
 	window.location.href = "/chatrooms";
 });
 
